@@ -9,8 +9,8 @@ public class RubikCubeDatabase {
     //The database name to be created in Mysql
     private static final String DB_NAME = "CubesDatabase";
     //User name and password for the user on the database
-    private static final String USER = "Momo";
-    private static final String PASS = "password";
+    private static final String USER = "root";
+    private static final String PASS = "nerf gun";
 
     //
     static Statement statement = null;
@@ -51,7 +51,7 @@ public class RubikCubeDatabase {
             if (rs != null) {
                 rs.close();
             }
-            String loadData = "SELECT* FROM  RUBIKTABLENAME";
+            String loadData = "SELECT* FROM RUBIC";
             rs = statement.executeQuery(loadData);
             if (dataModel == null) {
                 dataModel = new RubikCubeDataModel(rs);
@@ -85,18 +85,20 @@ public class RubikCubeDatabase {
             if (!rubikTableexist()) {
                 PreparedStatement psInsert = null;
                    // Creation of the table
-                String createTable = "CREATE TABLE  RUBIC (PK_COLUMN int AUTO_INCREMENT, RUBIKTITLENAME VARCHAR(50), TIME_IN_SECONDS DOUBLE )";
+                String createTable = "CREATE TABLE if not exists RUBIC (PK_COLUMN int not null auto_increment, RUBIKTITLENAME VARCHAR(50), TIME_IN_SECONDS DOUBLE, Primary key (pk_column))";
                 statement.executeUpdate(createTable);
                 //Use of the prepared statement
-                String addDataSql = "INSERT INTO RUBIC VALUES  (?, ?)";
+                String addDataSql = "INSERT INTO RUBIC (RUBIKTITLENAME, TIME_IN_SECONDS) VALUES  (?, ?)";
                 psInsert = conn.prepareStatement(addDataSql);
                 //Setting of prepared statement varioable
                 psInsert.setString(1, "Fakhri Raihaan");
                 psInsert.setDouble(2, 27.23);
+                psInsert.executeUpdate();
 
-                psInsert.setString(1,"Cubestormer II robot" );
+                psInsert.setString(1,"Cubestormer II robot");
                 psInsert.setDouble(2, 5.27);
                 psInsert.executeUpdate();
+
                 psInsert.close();
 
 
