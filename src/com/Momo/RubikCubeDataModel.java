@@ -94,11 +94,11 @@ public class RubikCubeDataModel extends AbstractTableModel{
 //A method that insert a row in the database
     public boolean insertRows(String cube_Solver, double time_In_seconds ){
         try{
-            resultSet.moveToCurrentRow();
-            resultSet.updateString(RubikCubeDatabase.RUBIKTITLENAME, cube_Solver);
-            resultSet.updateDouble(RubikCubeDatabase.TIME_IN_SECONDS, time_In_seconds);
+            resultSet.moveToInsertRow();
+            resultSet.updateString(RubikCubeDatabase.SOLVER_COL, cube_Solver);
+            resultSet.updateDouble(RubikCubeDatabase.TIME_COL, time_In_seconds);
             resultSet.insertRow();
-            resultSet.moveToCurrentRow();
+            countRows();
             fireTableDataChanged();
             return true;
         }catch (SQLException ce){
