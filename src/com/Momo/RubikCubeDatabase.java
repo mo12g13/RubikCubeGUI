@@ -7,10 +7,10 @@ public class RubikCubeDatabase {
     //Definition of the localhost server
     private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
     //The database name to be created in Mysql
-    private static final String DB_NAME = "CubesDatabase";
+    private static final String DB_NAME = "cubes";
     //User name and password for the user on the database
     private static final String USER = "root";
-    private static final String PASS = "nerf gun";
+    private static final String PASS = "YOUR PASSWORD HERE"; //todo
 
     //
     static Statement statement = null;
@@ -18,11 +18,12 @@ public class RubikCubeDatabase {
     static ResultSet rs = null;
 
 
-    public final static String RUBIC = "rubikTableName";   //The table name
+    public final static String RUBIC = "RUBIC_TABLE";   //The table name
+
     public final static String PK_COLUMN = "Number";//Wanted this to be a primary key but have problem getting it to work
     //A primary key is needed to allow updates to the database on modifications to ResultSet
-    public final static String RUBIKTITLENAME = "Cube_Solver"; //Variable of the Cube solver which define the cube solver
-    public final static String TIME_IN_SECONDS = "time_In_seconds";  //The variable that holds the time in seconds in the database;
+    public final static String SOLVER_COL = "Cube_Solver"; //Variable of the Cube solver which define the cube solver
+    public final static String TIME_COL = "time_in_seconds";  //The variable that holds the time in seconds in the database;
     private static RubikCubeDataModel dataModel;  //The model varible of the data model
 
 
@@ -51,7 +52,7 @@ public class RubikCubeDatabase {
             if (rs != null) {
                 rs.close();
             }
-            String loadData = "SELECT* FROM RUBIC";
+            String loadData = "SELECT * FROM " + RUBIC ;
             rs = statement.executeQuery(loadData);
             if (dataModel == null) {
                 dataModel = new RubikCubeDataModel(rs);
@@ -85,10 +86,13 @@ public class RubikCubeDatabase {
             if (!rubikTableexist()) {
                 PreparedStatement psInsert = null;
                    // Creation of the table
-                String createTable = "CREATE TABLE if not exists RUBIC (PK_COLUMN int not null auto_increment, RUBIKTITLENAME VARCHAR(50), TIME_IN_SECONDS DOUBLE, Primary key (pk_column))";
+                String createTable = "CREATE TABLE if not exists " + RUBIC + "(" + PK_COLUMN + " int not null auto_increment, " + SOLVER_COL + " VARCHAR(50), " + TIME_COL + " DOUBLE, Primary key (" + PK_COLUMN + "))";
+
+
+
                 statement.executeUpdate(createTable);
                 //Use of the prepared statement
-                String addDataSql = "INSERT INTO RUBIC (RUBIKTITLENAME, TIME_IN_SECONDS) VALUES  (?, ?)";
+                String addDataSql = "INSERT INTO " + RUBIC  + "(" + SOLVER_COL + "," + TIME_COL + ") VALUES  (?, ?)";
                 psInsert = conn.prepareStatement(addDataSql);
                 //Setting of prepared statement varioable
                 psInsert.setString(1, "Fakhri Raihaan");
